@@ -1,5 +1,12 @@
 {
-  "type": "module",
+  "name": "pixelblast_backend",
+  "version": "1.0.0",
+  "main": "dist/app.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "dev": "ts-node app.ts"
+  },
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.6",
@@ -9,12 +16,7 @@
     "mongoose": "^8.18.1",
     "morgan": "^1.10.0",
     "node-fetch": "^3.3.2",
-    "nodemon": "^3.1.10",
     "uid2": "^1.0.0"
-  },
-  "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
