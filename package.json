@@ -3,7 +3,7 @@
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.6",
-    "dotenv": "^17.2.2",
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "express-fileupload": "^1.4.0",
     "mongoose": "^8.18.1",
@@ -15,5 +15,15 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.5",
+    "@types/mongoose": "^5.11.97",
+    "@types/node": "^24.10.0",
+    "@types/uid2": "^0.0.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   }
 }
