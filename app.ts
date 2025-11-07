@@ -17,5 +17,9 @@ app.use(express.json());
 app.use("/users", userRouter);
 app.use("/game", gameRouter);
 
+app.get("/ping", (req, res) => {
+    res.json({ message: "pong ✅" });
+  });
+
 // Lancement du serveur
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
