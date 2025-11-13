@@ -1,4 +1,3 @@
-// backend/routes/users.js
 import express from "express";
 import bcrypt from "bcrypt";
 import uid2 from "uid2";
@@ -39,7 +38,7 @@ router.post("/signup", async (req, res) => {
       id: savedUser._id,
     });
   } catch (err: any) {
-    // 🧩 gestion d'erreur mongoose
+    // gestion d'erreur mongoose
     if (err?.code === 11000) {
       return res
         .status(409)
@@ -54,7 +53,7 @@ router.post("/signup", async (req, res) => {
 
 
 
-// === SIGNIN ===
+// SIGNIN 
 router.post("/signin", async (req, res) => {
   if (!checkBody(req.body, ["email", "password"])) {
     return res.json({ result: false, error: "Missing or empty fields" });
@@ -66,9 +65,9 @@ router.post("/signin", async (req, res) => {
       res.json({
         result: true,
         token: user.token,
-        id: user._id,          // ✅ pour reconnaître ton profil
+        id: user._id,          // pour reconnaître ton profil
         nickname: user.nickname,
-        color: user.color,     // ✅ ta couleur stockée
+        color: user.color,     // ta couleur stockée
       });
     } else {
       res.json({ result: false, error: "User not found or wrong password" });
@@ -80,7 +79,7 @@ router.post("/signin", async (req, res) => {
 });
 
 
-// === CREATE / UPDATE PROFILE ===
+//  CREATE / UPDATE PROFILE 
 router.put("/profile", async (req, res) => {
   const { token, nickname, color } = req.body;
 
@@ -88,7 +87,7 @@ router.put("/profile", async (req, res) => {
     return res.json({ result: false, error: "Missing token" });
   }
 
-  // ✅ Correction ici
+  // Correction ici
   const updates: Record<string, any> = {};
 
   if (nickname) updates.nickname = nickname.trim();
@@ -117,7 +116,7 @@ router.put("/profile", async (req, res) => {
 });
 
 
-// === GET USER BY TOKEN ===
+// GET USER BY TOKEN 
 router.get("/:token", async (req, res) => {
   try {
     const user = await User.findOne({ token: req.params.token });
@@ -132,7 +131,7 @@ router.get("/:token", async (req, res) => {
   }
 });
 
-// === UPDATE BEST SCORE & LEVEL ===
+// UPDATE BEST SCORE & LEVEL 
 router.patch("/best", async (req, res) => {
   const { token, bestScore, bestLevel } = req.body;
 
@@ -162,7 +161,7 @@ router.patch("/best", async (req, res) => {
   }
 });
 
-// === 🧩 FRIEND SYSTEM ===
+// FRIEND SYSTEM 
 
 // Envoyer une demande d’ami
 router.post("/friends/request", async (req, res) => {
@@ -227,7 +226,7 @@ router.get("/friends/leaderboard/:token", async (req, res) => {
       return res.json({ result: false, error: "Utilisateur introuvable" });
     }
 
-    // 🧩 Typage explicite ici
+    // Typage explicite ici
     const friends = user.friends as unknown as Array<{
       _id: string;
       nickname: string;
@@ -263,7 +262,7 @@ router.get("/friends/leaderboard/:token", async (req, res) => {
 });
 
 
-// === CHECK NICKNAME (anti-doublon pseudo) ===
+// CHECK NICKNAME (anti-doublon pseudo)
 router.get("/check-nickname/:nickname", async (req, res) => {
   try {
     const nicknameToCheck = req.params.nickname.trim();
@@ -275,7 +274,7 @@ router.get("/check-nickname/:nickname", async (req, res) => {
   }
 });
 
-// 📨 Obtenir les demandes d’amis reçues
+// Obtenir les demandes d’amis reçues
 router.get("/friends/requests/:token", async (req, res) => {
   try {
     const user = await User.findOne({ token: req.params.token })
@@ -289,7 +288,7 @@ router.get("/friends/requests/:token", async (req, res) => {
   }
 });
 
-// === SUPPRIMER UN AMI ===
+// SUPPRIMER UN AMI
 router.delete("/friends/delete", async (req, res) => {
   const { token, friendId } = req.body;
 
@@ -305,11 +304,11 @@ router.delete("/friends/delete", async (req, res) => {
       return res.json({ result: false, error: "User not found" });
     }
 
-    // 🔥 Retirer chacun de la liste d'amis de l'autre
+    // Retirer chacun de la liste d'amis de l'autre
     user.friends = user.friends.filter((id) => id.toString() !== friendId);
     friend.friends = friend.friends.filter((id) => id.toString() !== user._id.toString());
 
-    // 🧹 Nettoyage des demandes si une restait par erreur
+    // Nettoyage des demandes si une restait par erreur
     user.friendRequests = user.friendRequests.filter(
       (id) => id.toString() !== friendId
     );

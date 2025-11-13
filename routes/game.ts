@@ -5,20 +5,20 @@ import Game from '../models/game.js';
 
 const router = express.Router();
 
-// === CREATE GAME ===
+// CREATE GAME 
 router.post('/create', async (req, res) => {
   if (!checkBody(req.body, ['token', 'title', 'score', 'niveau'])) {
     return res.json({ result: false, error: 'Missing or empty fields' });
   }
 
   try {
-    // 🔍 Récupère l'utilisateur via le token
+    // Récupère l'utilisateur via le token
     const user = await User.findOne({ token: req.body.token });
     if (!user) {
       return res.json({ result: false, error: 'User not found' });
     }
 
-    // 🕹️ Crée la partie
+    // Crée la partie
     const newGame = new Game({
       title: req.body.title,
       score: req.body.score,
@@ -28,11 +28,11 @@ router.post('/create', async (req, res) => {
 
     const savedGame = await newGame.save();
 
-    // 🔗 Relier la partie à l'utilisateur
+    // Relier la partie à l'utilisateur
     user.gamesId.push(savedGame._id);
     await user.save();
 
-    // ✅ Réponse finale
+    // Réponse finale
     res.json({ result: true, game: savedGame });
   } catch (err) {
     console.error(err);
